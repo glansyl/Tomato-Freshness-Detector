@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍅 Tomato Freshness Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🍅</span>
+                <h1>Tomato Freshness Detector</h1>
+            </div>
+            <p class="subtitle">AI-powered tomato quality detection system</p>
+        </header>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <button class="mode-btn active" data-mode="webcam">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+                Live Webcam
+            </button>
+            <button class="mode-btn" data-mode="upload">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload Image
+            </button>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content">
+            <!-- Webcam Mode -->
+            <div class="mode-content active" id="webcam-mode">
+                <div class="video-container">
+                    <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Video Stream">
+                    <div class="camera-status">
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Live</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h3>💡 Live Detection Active</h3>
+                    <p>Point your camera at tomatoes to analyze their freshness in real-time.</p>
+                </div>
+            </div>
+
+            <!-- Upload Mode -->
+            <div class="mode-content" id="upload-mode">
+                <div class="upload-container">
+                    <div class="upload-area" id="upload-area">
+                        <svg class="upload-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <h3>Upload Image</h3>
+                        <p>Click to select or drag and drop an image</p>
+                        <input type="file" id="file-input" accept="image/*" hidden>
+                    </div>
+                    
+                    <div class="preview-container" id="preview-container" style="display: none;">
+                        <img id="preview-image" src="" alt="Preview">
+                        <div class="preview-actions">
+                            <button class="btn btn-primary" id="analyze-btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="m21 21-4.35-4.35"/>
+                                </svg>
+                                Analyze Image
+                            </button>
+                            <button class="btn btn-secondary" id="clear-btn">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="results-container" id="results-container" style="display: none;">
+                        <h3>Analysis Results</h3>
+                        <div class="processed-image-container">
+                            <img id="processed-image" src="" alt="Processed Image">
+                        </div>
+                        <div id="detections-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend-card">
+            <h3>Classification Legend</h3>
+            <div class="legend-grid">
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #10b981;"></span>
+                    <span class="legend-label">Ripe</span>
+                    <span class="legend-desc">Perfect for consumption</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #f59e0b;"></span>
+                    <span class="legend-label">Unripe</span>
+                    <span class="legend-desc">Needs more time</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #f97316;"></span>
+                    <span class="legend-label">Old</span>
+                    <span class="legend-desc">Past prime condition</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #ef4444;"></span>
+                    <span class="legend-label">Damaged</span>
+                    <span class="legend-desc">Not suitable for sale</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="spinner"></div>
+            <p>Analyzing...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
